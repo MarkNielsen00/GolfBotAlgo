@@ -6,7 +6,6 @@ class Controller(object):
         print("Running Algorithm")
 
         # Setup state
-
         robot = Robot.Robot(0, [6,8])
         course = Course.Course(8, 10, robot)
         course.map_course()

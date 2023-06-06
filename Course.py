@@ -148,3 +148,11 @@ class Course(object):
         self.ball_placements.append([0, 0])
         self.ball_placements.append([2, 3])
         self.ball_placements.append([6, 4])
+
+
+
+    # Dynamically fetches ball placements
+    def get_ball_placements(self, list: list):
+        for i in len(list):
+            self.ball_placements.append(list[i])
+

@@ -15,7 +15,7 @@ class Course(object):
         # Create entire field
         for x in range(self.x_rows):
             for y in range(self.y_columns):
-                self.map[x-1].append(Node.Node([x,y], 0, 0))
+                self.map[x].append(Node.Node([x,y], 0, 0))
 
         # Create vertices
         self.setup_vertices()
@@ -33,23 +33,23 @@ class Course(object):
                 node = self.get_node(x,y)
                 # Adding to the left
                 if (x > 0):
-                    node.vertices.append(self.get_node(x-2, y))
+                    node.vertices.append(self.get_node(x - 1, y))
                     if(y > 0):
-                        node.vertices.append(self.get_node(x - 2, y-1))
+                        node.vertices.append(self.get_node(x - 1, y-1))
                     if (y < self.y_columns-1):
-                        node.vertices.append(self.get_node(x - 2, y+1))
+                        node.vertices.append(self.get_node(x - 1, y+1))
                 # Adding right
                 if (x < self.x_rows-1):
-                    node.vertices.append(self.get_node(x, y))
+                    node.vertices.append(self.get_node(x+1, y))
                     if (y > 0):
-                        node.vertices.append(self.get_node(x, y-1))
+                        node.vertices.append(self.get_node(x+1, y-1))
                     if (y < self.y_columns-1):
-                        node.vertices.append(self.get_node(x, y+1))
+                        node.vertices.append(self.get_node(x+1, y+1))
                 # Adding up/down
                 if (y > 0):
-                    node.vertices.append(self.get_node(x - 1, y-1))
+                    node.vertices.append(self.get_node(x, y-1))
                 if (y < self.y_columns-1):
-                    node.vertices.append(self.get_node(x - 1, y+1))
+                    node.vertices.append(self.get_node(x, y+1))
 
     def bfs(self):
         explored_nodes = list()
@@ -66,7 +66,7 @@ class Course(object):
         print("Started [" + str(self.robot.pos[0]) + ":" + str(self.robot.pos[1]) + "]")
 
         # Check frontier for balls
-        self.get_node(self.robot.pos[0]-1, self.robot.pos[1]).is_explored = 1
+        self.get_node(self.robot.pos[0], self.robot.pos[1]).is_explored = 1
         while(ball_found == 0):
             while(len(frontier) > 0):
                 # Add all nodes
@@ -88,7 +88,7 @@ class Course(object):
             layer += 1
 
         # Find the path to the node
-        layer -= 2
+        layer -= 1
         print("...")
         print("The Path is")
         path.append(closest_ball_node)
@@ -102,11 +102,18 @@ class Course(object):
                     new_next_in_path = layered_nodes[layer - i][q]
                     #new_next_in_path = self.get_node(next_in_path.coordinates[0], next_in_path.coordinates[1])
                     path.append(new_next_in_path)
-                    print("Next in path is: ["+str(new_next_in_path.coordinates[0])+", "+str(next_in_path.coordinates[1])+"]")
+                    print("Next in path is: ["+str(new_next_in_path.coordinates[0])+", "+str(new_next_in_path.coordinates[1])+"]")
                     #print("The node is" + str(new_next_in_path))
                     #print("their neighbours are: " + str(new_next_in_path.vertices))
                     break
             next_in_path = new_next_in_path
+
+        for q in range(len(layered_nodes[0])):
+            if (layered_nodes[0][q] in next_in_path.vertices):
+                new_next_in_path = layered_nodes[0][q]
+                path.append(new_next_in_path)
+                print("Next step is: ["+str(new_next_in_path.coordinates[0])+", "+str(new_next_in_path.coordinates[1])+"]")
+                break
         return None
 
     def print_tui_state(self):

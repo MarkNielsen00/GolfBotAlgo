@@ -104,17 +104,17 @@ class Course(object):
         robot_node = self.get_node(self.robot.pos[0], self.robot.pos[1])
         for i in range(layer):
             #print("For layer number: "+str(layer-i))
-            for q in range(len(layered_nodes[layer-i])):
-                if (layered_nodes[layer-i][q] in next_in_path.vertices):
-                    new_next_in_path = layered_nodes[layer - i][q]
+            for k in range(len(layered_nodes[layer-i])):
+                if (layered_nodes[layer-i][k] in next_in_path.vertices):
+                    new_next_in_path = layered_nodes[layer - i][k]
                     path.append(new_next_in_path)
                     print("Next in path is: ["+str(new_next_in_path.coordinates[0])+", "+str(new_next_in_path.coordinates[1])+"]")
                     break
             next_in_path = new_next_in_path
 
-        for q in range(len(layered_nodes[0])):
-            if (layered_nodes[0][q] in next_in_path.vertices):
-                new_next_in_path = layered_nodes[0][q]
+        for k in range(len(layered_nodes[0])):
+            if (layered_nodes[0][k] in next_in_path.vertices):
+                new_next_in_path = layered_nodes[0][k]
                 path.append(new_next_in_path)
                 print("Next step is: ["+str(new_next_in_path.coordinates[0])+", "+str(new_next_in_path.coordinates[1])+"]")
                 break
@@ -166,6 +166,6 @@ class Course(object):
         self.ball_placements.append([6, 4])
 
     # Dynamically fetches ball placements
-    def get_ball_placements(self, list: list):
+    '''def get_ball_placements(self, list: list):
         for i in len(list):
-            self.ball_placements.append(list[i])
+            self.ball_placements.append(list[i])'''

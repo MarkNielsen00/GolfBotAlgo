@@ -1,5 +1,7 @@
 import Robot
 import Node
+from DIRECTION import DIRECTION
+
 
 class Course(object):
 
@@ -12,8 +14,9 @@ class Course(object):
         self.small_goal_placement = [0, 0]
         self.large_goal_placement = [0, 0]
 
+        self.path_direction = DIRECTION.NORTH
     def map_course(self):
-        print("Mappping the course")
+        print("Mapping the course")
 
         # Create entire field
         for x in range(self.x_rows):
@@ -37,17 +40,17 @@ class Course(object):
                 # Adding to the left
                 if (x > 0):
                     node.vertices.append(self.get_node(x - 1, y))
-                    if(y > 0):
-                        node.vertices.append(self.get_node(x - 1, y-1))
-                    if (y < self.y_columns-1):
-                        node.vertices.append(self.get_node(x - 1, y+1))
+                    #if(y > 0):
+                        #node.vertices.append(self.get_node(x - 1, y-1))
+                    #if (y < self.y_columns-1):
+                        #node.vertices.append(self.get_node(x - 1, y+1))
                 # Adding right
                 if (x < self.x_rows-1):
                     node.vertices.append(self.get_node(x+1, y))
-                    if (y > 0):
-                        node.vertices.append(self.get_node(x+1, y-1))
-                    if (y < self.y_columns-1):
-                        node.vertices.append(self.get_node(x+1, y+1))
+                    #if (y > 0):
+                        #node.vertices.append(self.get_node(x+1, y-1))
+                    #if (y < self.y_columns-1):
+                        #node.vertices.append(self.get_node(x+1, y+1))
                 # Adding up/down
                 if (y > 0):
                     node.vertices.append(self.get_node(x, y-1))
@@ -96,18 +99,16 @@ class Course(object):
         print("The Path is")
         path.append(closest_ball_node)
         next_in_path = closest_ball_node
+        new_next_in_path = next_in_path
         #print("their neighbours are: " + str(next_in_path.vertices))
         robot_node = self.get_node(self.robot.pos[0], self.robot.pos[1])
         for i in range(layer):
-            print("For layer number: "+str(layer-i))
+            #print("For layer number: "+str(layer-i))
             for q in range(len(layered_nodes[layer-i])):
                 if (layered_nodes[layer-i][q] in next_in_path.vertices):
                     new_next_in_path = layered_nodes[layer - i][q]
-                    #new_next_in_path = self.get_node(next_in_path.coordinates[0], next_in_path.coordinates[1])
                     path.append(new_next_in_path)
                     print("Next in path is: ["+str(new_next_in_path.coordinates[0])+", "+str(new_next_in_path.coordinates[1])+"]")
-                    #print("The node is" + str(new_next_in_path))
-                    #print("their neighbours are: " + str(new_next_in_path.vertices))
                     break
             next_in_path = new_next_in_path
 
@@ -117,6 +118,8 @@ class Course(object):
                 path.append(new_next_in_path)
                 print("Next step is: ["+str(new_next_in_path.coordinates[0])+", "+str(new_next_in_path.coordinates[1])+"]")
                 break
+        self.path_direction = self.find_direction(new_next_in_path, self.get_node(self.robot.pos[0], self.robot.pos[1]))
+        print(self.path_direction)
         return None
 
     def print_tui_state(self):
@@ -143,6 +146,16 @@ class Course(object):
         for b in range(len(self.ball_placements)):
             self.get_node(self.ball_placements[b][0], self.ball_placements[b][1]).has_ball = 1
             #print("Got ball: "+self.get_node(self.ball_placements[b][0], self.ball_placements[b][1]))
+
+    def find_direction(self, next_path_node: Node, robot_node: Node):
+        if (next_path_node.coordinates[0] > robot_node.coordinates[0]):
+            return DIRECTION.EAST
+        if (next_path_node.coordinates[0] < robot_node.coordinates[0]):
+            return DIRECTION.WEST
+        if (next_path_node.coordinates[1] < robot_node.coordinates[1]):
+            return DIRECTION.NORTH
+        if (next_path_node.coordinates[1] > robot_node.coordinates[1]):
+            return DIRECTION.SOUTH
 
     def get_ball_placements(self):
         self.ball_placements.clear()

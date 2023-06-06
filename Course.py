@@ -112,7 +112,7 @@ class Course(object):
                     break
             next_in_path = new_next_in_path
 
-        for q in range(len(layered_nodes[0])):
+        for k in range(len(layered_nodes[0])):
             if (layered_nodes[0][k] in next_in_path.vertices):
                 new_next_in_path = layered_nodes[0][k]
                 path.append(new_next_in_path)
@@ -166,6 +166,6 @@ class Course(object):
         self.ball_placements.append([6, 4])
 
     # Dynamically fetches ball placements
-    def get_ball_placements(self, list: list):
+    '''def get_ball_placements(self, list: list):
         for i in len(list):
-            self.ball_placements.append(list[i])
+            self.ball_placements.append(list[i])'''

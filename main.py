@@ -7,5 +7,5 @@ if __name__ == '__main__':
     Controller.run()
 
     # OpenCV script
-    openCV.main.main()
+    openCV.main()
 

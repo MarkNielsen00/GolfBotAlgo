@@ -9,6 +9,9 @@ class Course(object):
         self.robot = robot
         self.map = [list() for _ in range(x_rows)]
         self.ball_placements = list()
+        self.small_goal_placement = [0, 0]
+        self.large_goal_placement = [0, 0]
+
     def map_course(self):
         print("Mappping the course")
 
@@ -149,10 +152,7 @@ class Course(object):
         self.ball_placements.append([2, 3])
         self.ball_placements.append([6, 4])
 
-
-
     # Dynamically fetches ball placements
     def get_ball_placements(self, list: list):
         for i in len(list):
             self.ball_placements.append(list[i])
-

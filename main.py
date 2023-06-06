@@ -4,8 +4,9 @@ import Controller
 import openCV
 
 if __name__ == '__main__':
-    Controller.run()
-
     # OpenCV script
-    openCV.main()
+    openCV.main.main()
+    
+    # Run algorithm
+    Controller.run()
 

@@ -1,16 +1,19 @@
 import Robot
 import Node
+import openCV
 from DIRECTION import DIRECTION
 
-
 class Course(object):
-
     def __init__(self, x_rows: int, y_columns: int, robot: Robot):
         self.x_rows = x_rows
         self.y_columns = y_columns
         self.robot = robot
         self.map = [list() for _ in range(x_rows)]
         self.ball_placements = list()
+        self.vip_ball = list()
+        
+        self.test = list()
+        
         self.small_goal_placement = [0, 0]
         self.large_goal_placement = [0, 0]
 
@@ -25,7 +28,14 @@ class Course(object):
 
         # Create vertices
         self.setup_vertices()
-
+        
+        
+        # Retrieving coordinates from openCV
+        self.get_current_white_placements()
+        
+        for i in self.test:
+            print("COORDINATE (WHITE): " + str(i))
+        
         # Setting up rest of field
         self.get_ball_placements()
         self.set_ball_placements()
@@ -88,7 +98,7 @@ class Course(object):
                         closest_ball_node = nodes_to_add[i]
                         print("Ball has been found: [" + str(nodes_to_add[i].coordinates[0]) +":"+ str(nodes_to_add[i].coordinates[1])+"]")
                         print("On layer: "+str(layer))
-            print("Layer Complete")
+            #print("Layer Complete")
             for i in range(len(layered_nodes[layer])):
                 frontier.append(layered_nodes[layer][i])
             layer += 1
@@ -138,6 +148,8 @@ class Course(object):
 
     def get_node(self,x,y):
         return self.map[x][y]
+    
+    
     def set_ball_placements(self):
         for y in range(self.y_columns):
             for x in range(self.x_rows):
@@ -146,6 +158,7 @@ class Course(object):
         for b in range(len(self.ball_placements)):
             self.get_node(self.ball_placements[b][0], self.ball_placements[b][1]).has_ball = 1
             #print("Got ball: "+self.get_node(self.ball_placements[b][0], self.ball_placements[b][1]))
+
 
     def find_direction(self, next_path_node: Node, robot_node: Node):
         if (next_path_node.coordinates[0] > robot_node.coordinates[0]):
@@ -161,11 +174,29 @@ class Course(object):
         self.ball_placements.clear()
 
         # Dummy data
-        self.ball_placements.append([0, 0])
+        '''self.ball_placements.append([0, 0])
         self.ball_placements.append([2, 3])
-        self.ball_placements.append([6, 4])
+        self.ball_placements.append([6, 4])'''
+        
 
-    # Dynamically fetches ball placements
-    '''def get_ball_placements(self, list: list):
-        for i in len(list):
-            self.ball_placements.append(list[i])'''
+    # Gets the placement of the white balls
+    def get_current_white_placements(self):
+        white_coordinate: list(int, int)
+        for white_coordinate in openCV.openCV.get_white_coordinates():
+            
+            # Scaling of the coordinates to work with algorithm
+            x_scaled_coordinate = white_coordinate[0] / 8
+            y_scaled_coordinate = white_coordinate[1] / 10
+    
+            self.test.append( (x_scaled_coordinate, y_scaled_coordinate) )
+        
+        #openCV.openCV.refresh()
+        
+        return self.test
+        
+    # Gets the placement of the orange balls
+    def get_current_vip_ball_placement(self):
+        self.vip_ball.append(openCV.openCV.get_orange_coordinates[i]())
+        
+        return self.vip_ball
+    

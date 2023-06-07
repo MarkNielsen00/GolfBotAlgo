@@ -10,20 +10,30 @@ from pybricks.media.ev3dev import SoundFile, ImageFile
 import cv2
 import numpy as np
 
+<<<<<<< HEAD
 #Import of the Ev3 program
 import Ev3
+=======
+>>>>>>> d19bfae6d270239fd0588abfca5882dc7b5a78c6
 
 class openCV:
+    white_coordinates = []
+    orange_coordinates = []
+        
+    def get_white_coordinates():
+        return openCV.white_coordinates
+        
+    def get_orange_coordinates():
+        return openCV.orange_coordinates
+    
+    def refresh():
+        openCV.white_coordinates.clear()
+        openCV.orange_coordinates.clear()
+        
     def mask_detection():
         #Global capture
         global cap
-        cap = cv2.VideoCapture(1)
-
-        white_coordinates = []
-        orange_coordinates = []
-        robot_coordinates = []
-
-        font =  cv2.FONT_HERSHEY_SIMPLEX
+        cap = cv2.VideoCapture(0)
 
         while True:
             # Capture a frame from the camera
@@ -76,13 +86,11 @@ class openCV:
             for c in white_contours:
                 x, y, w, h =cv2.boundingRect(c)
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 255, 255), 2)
-                cv2.putText(frame, f'{x}, {y}', (x + 10, y), font, 0.5, (0, 255, 0), 1)
-                white_coordinates.append((x, y))               
+                openCV.white_coordinates.append((x, y))               
 
             for c in orange_contours:
                 x, y, w, h = cv2.boundingRect(c)
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 165, 255), 2)
-                cv2.putText(frame, f'{x}, {y}', (x + 10, y), font, 0.5, (0, 165, 255), 1)
                 orange_coordinates.append((x, y))
                 
             for c in blue_contours:
@@ -99,19 +107,19 @@ class openCV:
             cv2.imshow("Object Detection", frame)
 
             # Exit the loop if contours are detected and coordinates are appended
-            if white_contours or orange_contours or blue_contours or red_contours:
-                break
+            '''if white_contours or orange_contours or red_contours:
+                break'''
             
             # Exit the loop if the 'q' key is pressed
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 print("Closed\n-----------------------------------------------------------")
                 break
 
-        for coordinate in white_coordinates:
+        for coordinate in openCV.white_coordinates:
             x, y = coordinate
             print(f'White ball coordinate:{x}, {y}')       
 
-        for coordinate in orange_coordinates:
+        for coordinate in openCV.orange_coordinates:
             x, y = coordinate
             print(f'Orange ball coordinate:{x}, {y}')     
 

@@ -10,12 +10,6 @@ from pybricks.media.ev3dev import SoundFile, ImageFile
 import cv2
 import numpy as np
 
-<<<<<<< HEAD
-#Import of the Ev3 program
-import Ev3
-=======
->>>>>>> d19bfae6d270239fd0588abfca5882dc7b5a78c6
-
 class openCV:
     white_coordinates = []
     orange_coordinates = []

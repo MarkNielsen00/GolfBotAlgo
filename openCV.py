@@ -10,6 +10,9 @@ from pybricks.media.ev3dev import SoundFile, ImageFile
 import cv2
 import numpy as np
 
+#Import of the Ev3 program
+import Ev3
+
 class openCV:
     def mask_detection():
         #Global capture
@@ -114,7 +117,7 @@ class openCV:
 
         for coordinate in robot_coordinates:
             x, y = coordinate
-            print(f'Robot coordinate:{x}, {y}')    
+            print(f'Robot coordinate:{x}, {y}')
 
     def mark_coordinates(event, x, y, flags, param):
         # Left mouse clicks

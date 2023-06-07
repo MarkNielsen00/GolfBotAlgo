@@ -10,9 +10,6 @@ from pybricks.media.ev3dev import SoundFile, ImageFile
 import cv2
 import numpy as np
 
-#Import of the Ev3 program
-import Ev3
-
 class openCV:
     white_coordinates = []
     orange_coordinates = []
@@ -47,7 +44,7 @@ class openCV:
             white_upper = np.array([179, 50, 255])
             red_lower = np.array([0, 100, 100])
             red_upper = np.array([10, 255, 255])
-            orange_lower = np.array([11, 170, 170])
+            orange_lower = np.array([11, 150, 150])
             orange_upper = np.array([25, 255, 255])
             blue_lower = np.array([11, 170, 170])
             blue_upper = np.array([25, 255, 255])
@@ -86,19 +83,19 @@ class openCV:
             for c in white_contours:
                 x, y, w, h =cv2.boundingRect(c)
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 255, 255), 2)
-                cv2.putText(frame, f'{x}, {y}', (x + 10, y), font, 0.5, (0, 255, 0), 1)
+                cv2.putText(frame, f'{x}, {y}', (x + 10, y), openCV.font, 0.5, (0, 255, 0), 1)
                 openCV.white_coordinates.append((x, y))               
 
             for c in orange_contours:
                 x, y, w, h = cv2.boundingRect(c)
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 165, 255), 2)
-                cv2.putText(frame, f'{x}, {y}', (x + 10, y), font, 0.5, (0, 165, 255), 1)
+                cv2.putText(frame, f'{x}, {y}', (x + 10, y), openCV.font, 0.5, (0, 165, 255), 1)
                 openCV.orange_coordinates.append((x, y))
                 
             for c in blue_contours:
                 x, y, w, h = cv2.boundingRect(c)
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 165, 255), 2)
-                cv2.putText(frame, f'{x}, {y}', (x + 10, y), font, 0.5, (0, 165, 255), 1)
+                cv2.putText(frame, f'{x}, {y}', (x + 10, y), openCV.font, 0.5, (0, 165, 255), 1)
                 openCV.robot_coordinates.append((x, y))
 
             for c in red_contours:
@@ -109,15 +106,15 @@ class openCV:
             cv2.imshow("Object Detection", frame)
 
             # Exit the loop if contours are detected and coordinates are appended
-            if white_contours or orange_contours or blue_contours or red_contours:
-                break
+            '''if white_contours or orange_contours or blue_contours or red_contours:
+                break'''
             
             # Exit the loop if the 'q' key is pressed
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 print("Closed\n-----------------------------------------------------------")
                 break
 
-        for coordinate in openCV.white_coordinates:
+        """ for coordinate in openCV.white_coordinates:
             x, y = coordinate
             print(f'White ball coordinate:{x}, {y}')       
 
@@ -127,7 +124,7 @@ class openCV:
 
         for coordinate in openCV.robot_coordinates:
             x, y = coordinate
-            print(f'Robot coordinate:{x}, {y}')
+            print(f'Robot coordinate:{x}, {y}') """
 
     def mark_coordinates(event, x, y, flags, param):
         # Left mouse clicks

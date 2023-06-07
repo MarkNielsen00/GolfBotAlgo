@@ -26,8 +26,8 @@ class Course(object):
             for y in range(self.y_columns):
                 self.map[x].append(Node.Node([x,y], 0, 0))
 
-        # Create vertices
-        self.setup_vertices()
+        # Create edges
+        self.setup_edges()
         
         
         # Retrieving coordinates from openCV
@@ -43,29 +43,29 @@ class Course(object):
         self.bfs()
         return None
 
-    def setup_vertices(self):
+    def setup_edges(self):
         for x in range(self.x_rows):
             for y in range(self.y_columns):
                 node = self.get_node(x,y)
                 # Adding to the left
                 if (x > 0):
-                    node.vertices.append(self.get_node(x - 1, y))
+                    node.edges.append(self.get_node(x - 1, y))
                     #if(y > 0):
-                        #node.vertices.append(self.get_node(x - 1, y-1))
+                        #node.edges.append(self.get_node(x - 1, y-1))
                     #if (y < self.y_columns-1):
-                        #node.vertices.append(self.get_node(x - 1, y+1))
+                        #node.edges.append(self.get_node(x - 1, y+1))
                 # Adding right
                 if (x < self.x_rows-1):
-                    node.vertices.append(self.get_node(x+1, y))
+                    node.edges.append(self.get_node(x+1, y))
                     #if (y > 0):
-                        #node.vertices.append(self.get_node(x+1, y-1))
+                        #node.edges.append(self.get_node(x+1, y-1))
                     #if (y < self.y_columns-1):
-                        #node.vertices.append(self.get_node(x+1, y+1))
+                        #node.edges.append(self.get_node(x+1, y+1))
                 # Adding up/down
                 if (y > 0):
-                    node.vertices.append(self.get_node(x, y-1))
+                    node.edges.append(self.get_node(x, y-1))
                 if (y < self.y_columns-1):
-                    node.vertices.append(self.get_node(x, y+1))
+                    node.edges.append(self.get_node(x, y+1))
 
     def bfs(self):
         explored_nodes = list()
@@ -86,7 +86,7 @@ class Course(object):
         while(ball_found == 0):
             while(len(frontier) > 0):
                 # Add all nodes
-                nodes_to_add = frontier.pop().vertices
+                nodes_to_add = frontier.pop().edges
                 layered_nodes.append(list())
                 for i in range(len(nodes_to_add)):
                     if (nodes_to_add[i].is_explored == 0):
@@ -110,12 +110,12 @@ class Course(object):
         path.append(closest_ball_node)
         next_in_path = closest_ball_node
         new_next_in_path = next_in_path
-        #print("their neighbours are: " + str(next_in_path.vertices))
+        #print("their neighbours are: " + str(next_in_path.edges))
         robot_node = self.get_node(self.robot.pos[0], self.robot.pos[1])
         for i in range(layer):
             #print("For layer number: "+str(layer-i))
             for k in range(len(layered_nodes[layer-i])):
-                if (layered_nodes[layer-i][k] in next_in_path.vertices):
+                if (layered_nodes[layer-i][k] in next_in_path.edges):
                     new_next_in_path = layered_nodes[layer - i][k]
                     path.append(new_next_in_path)
                     print("Next in path is: ["+str(new_next_in_path.coordinates[0])+", "+str(new_next_in_path.coordinates[1])+"]")
@@ -123,7 +123,7 @@ class Course(object):
             next_in_path = new_next_in_path
 
         for k in range(len(layered_nodes[0])):
-            if (layered_nodes[0][k] in next_in_path.vertices):
+            if (layered_nodes[0][k] in next_in_path.edges):
                 new_next_in_path = layered_nodes[0][k]
                 path.append(new_next_in_path)
                 print("Next step is: ["+str(new_next_in_path.coordinates[0])+", "+str(new_next_in_path.coordinates[1])+"]")

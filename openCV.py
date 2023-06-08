@@ -14,11 +14,13 @@ class openCV:
     white_coordinates = []
     orange_coordinates = []
     robot_coordinates = []
+    
+    reduced_white_coordinates = []
 
     font =  cv2.FONT_HERSHEY_SIMPLEX
     
     def get_white_coordinates():
-        return openCV.white_coordinates
+        return openCV.reduced_white_coordinates
         
     def get_orange_coordinates():
         return openCV.orange_coordinates
@@ -31,6 +33,8 @@ class openCV:
         #Global capture
         global cap
         cap = cv2.VideoCapture(1)
+        
+        count = 0
 
         while True:
             # Capture a frame from the camera
@@ -83,8 +87,16 @@ class openCV:
             for c in white_contours:
                 x, y, w, h =cv2.boundingRect(c)
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 255, 255), 2)
-                cv2.putText(frame, f'{x}, {y}', (x + 10, y), openCV.font, 0.5, (0, 255, 0), 1)
-                openCV.white_coordinates.append((x, y))               
+                cv2.putText(frame, f'{x}, {y}', (x + 10, y), openCV.font, 0.5, (0, 255, 0), 1)    
+                openCV.white_coordinates.append((x, y))
+                
+                count += 1
+                if count == len(white_contours):
+                    for coordinate in openCV.white_coordinates:
+                        x, y = coordinate
+                        openCV.reduced_white_coordinates.append( (coordinate) )
+                        print(f'White ball coordinate:{x}, {y}') 
+                               
 
             for c in orange_contours:
                 x, y, w, h = cv2.boundingRect(c)
@@ -114,9 +126,7 @@ class openCV:
                 print("Closed\n-----------------------------------------------------------")
                 break
 
-        """ for coordinate in openCV.white_coordinates:
-            x, y = coordinate
-            print(f'White ball coordinate:{x}, {y}')       
+        """       
 
         for coordinate in openCV.orange_coordinates:
             x, y = coordinate

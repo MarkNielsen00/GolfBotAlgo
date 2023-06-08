@@ -33,8 +33,13 @@ class Course(object):
         # Retrieving coordinates from openCV
         self.get_current_white_placements()
         
+        # DEBUG: Testing of coordinates for orange and white
         for i in self.test:
             print("COORDINATE (WHITE): " + str(i))
+            
+        for i in self.vip_ball:
+            print("COORDINATE (VIP): " + str(i))
+
         
         # Setting up rest of field
         self.get_ball_placements()
@@ -155,8 +160,12 @@ class Course(object):
             for x in range(self.x_rows):
                 self.get_node(x,y).has_ball = 0
 
-        for b in range(len(self.ball_placements)):
+        '''for b in range(len(self.ball_placements)):
             self.get_node(self.ball_placements[b][0], self.ball_placements[b][1]).has_ball = 1
+            #print("Got ball: "+self.get_node(self.ball_placements[b][0], self.ball_placements[b][1]))'''
+            
+        for b in self.ball_placements:
+            self.get_node(b[0], b[1]).has_ball = 1
             #print("Got ball: "+self.get_node(self.ball_placements[b][0], self.ball_placements[b][1]))
 
 
@@ -185,8 +194,8 @@ class Course(object):
         for white_coordinate in openCV.openCV.get_white_coordinates():
             
             # Scaling of the coordinates to work with algorithm
-            x_scaled_coordinate = white_coordinate[0] / 8
-            y_scaled_coordinate = white_coordinate[1] / 10
+            x_scaled_coordinate = round((white_coordinate[0] / 600) * 10)
+            y_scaled_coordinate = round((white_coordinate[1] / 450) * 8)    
     
             self.test.append( (x_scaled_coordinate, y_scaled_coordinate) )
         
@@ -196,7 +205,17 @@ class Course(object):
         
     # Gets the placement of the orange balls
     def get_current_vip_ball_placement(self):
-        self.vip_ball.append(openCV.openCV.get_orange_coordinates[i]())
+        vip_coordinate: list(int, int)
+        for vip_coordinate in openCV.openCV.get_white_coordinates():
+            
+            # Scaling of the coordinates to work with algorithm
+            x_scaled_coordinate = round((vip_coordinate[0] / 600) * 10)
+            y_scaled_coordinate = round((vip_coordinate[1] / 450) * 8)    
+    
+            self.vip_ball.append( (x_scaled_coordinate, y_scaled_coordinate) )
+        
+        #openCV.openCV.refresh()
         
         return self.vip_ball
     
+        

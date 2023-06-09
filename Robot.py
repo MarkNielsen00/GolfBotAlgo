@@ -9,6 +9,7 @@ class Robot(object):
     
     def __init__(self, direction, pos: list[int]):
         self.direction = direction
+        self.angle = 0
         self.pos = pos
         self.target_pos = [0,0]
 

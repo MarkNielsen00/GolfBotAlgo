@@ -18,6 +18,7 @@ class Course(object):
         self.large_goal_placement = [0, 0]
 
         self.path_direction = DIRECTION.NORTH
+        self.all_balls_collected = False
     def map_course(self):
         print("Mapping the course")
 
@@ -46,6 +47,12 @@ class Course(object):
         self.set_ball_placements()
         self.print_tui_state()
         self.bfs()
+
+        while(self.all_balls_collected == False):
+            #Search for balls
+            self.get_ball_placements()
+            self.set_ball_placements()
+            self.bfs()
         return None
 
     def setup_edges(self):
@@ -134,7 +141,9 @@ class Course(object):
                 print("Next step is: ["+str(new_next_in_path.coordinates[0])+", "+str(new_next_in_path.coordinates[1])+"]")
                 break
         self.path_direction = self.find_direction(new_next_in_path, self.get_node(self.robot.pos[0], self.robot.pos[1]))
-        print(self.path_direction)
+
+        # Give directions to robot
+        self.give_robot_directions(self.path_direction.value, self.robot.angle)
         return None
 
     def print_tui_state(self):
@@ -178,6 +187,19 @@ class Course(object):
             return DIRECTION.NORTH
         if (next_path_node.coordinates[1] > robot_node.coordinates[1]):
             return DIRECTION.SOUTH
+
+    def give_robot_directions(self, target_dir, robot_dir):
+        diff: int = abs(target_dir-robot_dir)
+        backwards: int = target_dir + 180
+        if (diff < 5):
+            self.robot.move_forward()
+        else:
+            if (backwards < diff):
+                self.robot.turn_right()
+            else:
+                self.robot.turn_left()
+
+
 
     def get_ball_placements(self):
         self.ball_placements.clear()

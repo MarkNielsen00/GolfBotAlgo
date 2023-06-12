@@ -48,4 +48,5 @@ class Robot(object):
         green_location = list(200,200)
         yellow_location = list(200, 250)
 
-        self.direction = math.atan((green_location[1]-yellow_location[1])/(green_location[0]-yellow_location[0]))
+        angle_in_radians = math.atan2((green_location[1]-yellow_location[1])/(green_location[0]-yellow_location[0]))
+        self.direction = math.degrees(angle_in_radians)

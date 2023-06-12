@@ -11,8 +11,8 @@ class Controller(object):
         course.map_course()
 
         finished = 0
-        #while(finished == 0):
-
+        while(finished == 0):
+            course.map_course()
 
         return None
 def run():

@@ -7,7 +7,7 @@ class Controller(object):
 
         # Setup state
         robot = Robot.Robot(0, [6,8])
-        course = Course.Course(8, 10, robot)
+        course = Course.Course(23, 15, robot)
         course.map_course()
 
         finished = 0

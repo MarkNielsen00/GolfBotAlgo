@@ -12,7 +12,7 @@ class Course(object):
         self.ball_placements = list()
         self.vip_ball = list()
         
-        self.test = list()
+        self.white_balls = list()
         
         self.small_goal_placement = [0, 0]
         self.large_goal_placement = [0, 0]
@@ -34,7 +34,7 @@ class Course(object):
         self.get_current_white_placements()
         
         # DEBUG: Testing of coordinates for orange and white
-        for i in self.test:
+        for i in self.white_balls:
             print("COORDINATE (WHITE): " + str(i))
             
         for i in self.vip_ball:
@@ -159,14 +159,15 @@ class Course(object):
         for y in range(self.y_columns):
             for x in range(self.x_rows):
                 self.get_node(x,y).has_ball = 0
-
-        '''for b in range(len(self.ball_placements)):
-            self.get_node(self.ball_placements[b][0], self.ball_placements[b][1]).has_ball = 1
-            #print("Got ball: "+self.get_node(self.ball_placements[b][0], self.ball_placements[b][1]))'''
-            
-        for b in self.ball_placements:
-            self.get_node(b[0], b[1]).has_ball = 1
+                
+        balls: list(int, int)
+        for balls in self.white_balls:
+            self.get_node(balls[0], balls[1]).has_ball = 1
             #print("Got ball: "+self.get_node(self.ball_placements[b][0], self.ball_placements[b][1]))
+            
+        '''for b in self.white_balls:
+            self.get_node(b[0], b[1]).has_ball = 1
+            #print("Got ball: "+self.get_node(self.ball_placements[b][0], self.ball_placements[b][1]))'''
 
 
     def find_direction(self, next_path_node: Node, robot_node: Node):
@@ -192,16 +193,16 @@ class Course(object):
     def get_current_white_placements(self):
         white_coordinate: list(int, int)
         for white_coordinate in openCV.openCV.get_white_coordinates():
-            
+
             # Scaling of the coordinates to work with algorithm
-            x_scaled_coordinate = round((white_coordinate[0] / 600) * 10)
-            y_scaled_coordinate = round((white_coordinate[1] / 450) * 8)    
+            x_scaled_coordinate = round((white_coordinate[0] / 600) * self.x_rows) - round(((white_coordinate[0] / 600) * self.x_rows) * 0.1)
+            y_scaled_coordinate = round((white_coordinate[1] / 450) * self.y_columns)  - round(((white_coordinate[1] / 450) * self.y_columns) * 0.1)
     
-            self.test.append( (x_scaled_coordinate, y_scaled_coordinate) )
+            self.white_balls.append( (x_scaled_coordinate, y_scaled_coordinate) )
         
         #openCV.openCV.refresh()
         
-        return self.test
+        return self.white_balls
         
     # Gets the placement of the orange balls
     def get_current_vip_ball_placement(self):
@@ -209,8 +210,8 @@ class Course(object):
         for vip_coordinate in openCV.openCV.get_white_coordinates():
             
             # Scaling of the coordinates to work with algorithm
-            x_scaled_coordinate = round((vip_coordinate[0] / 600) * 10)
-            y_scaled_coordinate = round((vip_coordinate[1] / 450) * 8)    
+            x_scaled_coordinate = round((vip_coordinate[0] / 600) * self.x_rows)
+            y_scaled_coordinate = round((vip_coordinate[1] / 450) * self.y_columns)    
     
             self.vip_ball.append( (x_scaled_coordinate, y_scaled_coordinate) )
         

@@ -25,7 +25,7 @@ class Robot(object):
         return None
     
     # Robot turns left
-    '''def turn_left(self):
+    def turn_left(self):
         Robot.right_motor.run_target(speed = 500, target_angle = -90)
         
     # Robot turns right
@@ -40,6 +40,6 @@ class Robot(object):
     # Robot moves forward
     def move_forward(self):
         Robot.right_motor.run(speed = 300)
-        Robot.left_motor.run(speed = 300)'''
+        Robot.left_motor.run(speed = 300)
                 
         

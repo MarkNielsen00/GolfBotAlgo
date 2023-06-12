@@ -3,6 +3,7 @@ import Node
 import openCV
 from DIRECTION import DIRECTION
 
+
 class Course(object):
     def __init__(self, x_rows: int, y_columns: int, robot: Robot):
         self.x_rows = x_rows
@@ -43,14 +44,13 @@ class Course(object):
 
         
         # Setting up rest of field
-        self.get_ball_placements()
         self.set_ball_placements()
         self.print_tui_state()
         self.bfs()
 
         while(self.all_balls_collected == False):
             #Search for balls
-            self.get_ball_placements()
+            self.get_current_white_placements()
             self.set_ball_placements()
             self.bfs()
         return None
@@ -143,7 +143,7 @@ class Course(object):
         self.path_direction = self.find_direction(new_next_in_path, self.get_node(self.robot.pos[0], self.robot.pos[1]))
 
         # Give directions to robot
-        self.give_robot_directions(self.path_direction.value, self.robot.angle)
+        #self.give_robot_directions(self.path_direction.value, self.robot.angle)
         return None
 
     def print_tui_state(self):
@@ -172,6 +172,7 @@ class Course(object):
         balls: list(int, int)
         for balls in self.white_balls:
             self.get_node(balls[0], balls[1]).has_ball = 1
+            
             #print("Got ball: "+self.get_node(self.ball_placements[b][0], self.ball_placements[b][1]))
             
         '''for b in self.white_balls:
@@ -190,7 +191,7 @@ class Course(object):
             return DIRECTION.SOUTH
 
     def give_robot_directions(self, target_dir, robot_dir):
-        diff: int = abs(target_dir-robot_dir)
+        '''diff: int = abs(target_dir-robot_dir)
         backwards: int = target_dir + 180
         if (diff < 5):
             self.robot.move_forward()
@@ -198,22 +199,21 @@ class Course(object):
             if (backwards < diff):
                 self.robot.turn_right()
             else:
-                self.robot.turn_left()
+                self.robot.turn_left()'''
+                
+    
 
-
-
-    def get_ball_placements(self):
-        self.ball_placements.clear()
-
-        # Dummy data
-        '''self.ball_placements.append([0, 0])
-        self.ball_placements.append([2, 3])
-        self.ball_placements.append([6, 4])'''
-        
 
     # Gets the placement of the white balls
     def get_current_white_placements(self):
+        
+        '''for y in range(self.y_columns):
+            for x in range(self.x_rows):
+                self.get_node(x,y).has_ball = 0'''
+            
+        
         white_coordinate: list(int, int)
+
         for white_coordinate in openCV.openCV.get_white_coordinates():
 
             # Scaling of the coordinates to work with algorithm
@@ -233,7 +233,7 @@ class Course(object):
             
             # Scaling of the coordinates to work with algorithm
             x_scaled_coordinate = round((vip_coordinate[0] / 600) * self.x_rows)
-            y_scaled_coordinate = round((vip_coordinate[1] / 450) * self.y_columns)    
+            y_scaled_coordinate = round((vip_coordinate[1] / 450) * self.y_columns)
     
             self.vip_ball.append( (x_scaled_coordinate, y_scaled_coordinate) )
         

@@ -1,3 +1,5 @@
+import math
+
 from pybricks import ev3brick as brick
 from pybricks.ev3devices import Motor
 from pybricks.parameters import Port
@@ -41,4 +43,8 @@ class Robot(object):
         Robot.right_motor.run(speed = 300)
         Robot.left_motor.run(speed = 300)
         
-        
+    def find_angle(self):
+        green_location = list(200,200)
+        yellow_location = list(200, 250)
+
+        self.direction = math.atan((green_location[1]-yellow_location[1])/(green_location[0]-yellow_location[0]))

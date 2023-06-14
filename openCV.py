@@ -140,6 +140,10 @@ class openCV:
             """ if white_contours or orange_contours or blue_contours or red_contours:
                 break """
             
+            # Print out the click point coords when pressing 'p'
+            if cv2.waitKey(1) & 0xFF ==ord('p'):
+                print(f'Click coordinate list: {self.click_point_cord}')
+            
             # Exit the loop if the 'q' key is pressed
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 print("Closed\n-----------------------------------------------------------")

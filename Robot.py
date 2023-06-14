@@ -1,6 +1,5 @@
 import math
 
-from pybricks import ev3brick as brick
 from pybricks.ev3devices import Motor
 from pybricks.parameters import Port
 
@@ -49,4 +48,4 @@ class Robot(object):
         yellow_location = list(200, 250)
 
         angle_in_radians = math.atan2((green_location[1]-yellow_location[1])/(green_location[0]-yellow_location[0]))
-        self.direction = math.degrees(angle_in_radians)
+        self.angle = math.degrees(angle_in_radians)

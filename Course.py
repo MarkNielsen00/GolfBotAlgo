@@ -5,18 +5,17 @@ from DIRECTION import DIRECTION
 
 
 class Course(object):
-    def __init__(self, x_rows: int, y_columns: int, robot: Robot):
+    def __init__(self, x_rows: int, y_columns: int, robot: Robot.Robot):
         self.x_rows = x_rows
         self.y_columns = y_columns
         self.robot = robot
         self.map = [list() for _ in range(x_rows)]
         self.ball_placements = list()
         self.vip_ball = list()
-        
         self.white_balls = list()
         
-        self.small_goal_placement = [0, 0]
-        self.large_goal_placement = [0, 0]
+        self.small_goal : list(int, int) = [2, 8]
+        self.large_goal : list(int, int) = [21, 8]
 
         self.path_direction = DIRECTION.NORTH
         self.all_balls_collected = False
@@ -141,9 +140,15 @@ class Course(object):
                 print("Next step is: ["+str(new_next_in_path.coordinates[0])+", "+str(new_next_in_path.coordinates[1])+"]")
                 break
         self.path_direction = self.find_direction(new_next_in_path, self.get_node(self.robot.pos[0], self.robot.pos[1]))
+        
+        #update robot position
+        self.robot.pos = robot_node
+        
 
         # Give directions to robot
+        
         #self.give_robot_directions(self.path_direction.value, self.robot.angle)
+        
         return None
 
     def print_tui_state(self):
@@ -191,7 +196,7 @@ class Course(object):
             return DIRECTION.SOUTH
 
     def give_robot_directions(self, target_dir, robot_dir):
-        '''diff: int = abs(target_dir-robot_dir)
+        diff: int = abs(target_dir-robot_dir)
         backwards: int = target_dir + 180
         if (diff < 5):
             self.robot.move_forward()
@@ -199,11 +204,15 @@ class Course(object):
             if (backwards < diff):
                 self.robot.turn_right()
             else:
-                self.robot.turn_left()'''
+                self.robot.turn_left()
                 
-    
-
-
+    def robot_stop():
+        if(openCV.openCV.reduced_white_coordinates.count < 3):
+            return True
+        else:
+            return False
+        
+                
     # Gets the placement of the white balls
     def get_current_white_placements(self):
         

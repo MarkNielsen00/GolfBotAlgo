@@ -29,7 +29,13 @@ class Course(object):
 
         # Create edges
         self.setup_edges()
-        
+
+        # Removing edges for middle of field
+
+        for x in range(5):
+            for y in range(5):
+                node = self.get_node(23/2 - 3, 15/2 - 3)
+                node.edges.clear()
         
         # Retrieving coordinates from openCV
         self.get_current_white_placements()
@@ -159,7 +165,10 @@ class Course(object):
                     print(" ▲ ", end="")
                 else:
                     if (self.get_node(x,y).has_ball == 0):
-                        print(" □ ", end="")
+                        if (len(self.get_node(x,y).edges) == 0):
+                            print(" ■ ", end="")
+                        else:
+                            print(" □ ", end="")
                     else:
                         print(" ⦿ ", end="")
             print("")
